@@ -18,27 +18,30 @@ def predict_price(model_name, features):
 
 # Streamlit app
 def main():
-    st.title("Gold Price Prediction")
-    st.sidebar.header("Input Features")
+    st.title("Prediksi Harga Emas")
+    st.sidebar.header("Fitur Input")
     
-    close = st.sidebar.number_input("Close", min_value=0.0)
-    inflation = st.sidebar.number_input("Inflation", min_value=0.0)
-    exchange_rate = st.sidebar.number_input("Exchange Rate", min_value=0.0)
+    harga_penutupan = st.sidebar.number_input("Harga Penutupan (IHSG)", min_value=0.0)
+    inflasi = st.sidebar.number_input("Inflasi", min_value=0.0)
+    kurs_jual = st.sidebar.number_input("Kurs Jual", min_value=0.0)
+    kurs_beli = st.sidebar.number_input("Kurs Beli", min_value=0.0)
 
-    feature_vector = np.array([[close, inflation, exchange_rate]])
+    kurs_dollar = (kurs_jual + kurs_beli) / 2  # Rata-rata kurs jual dan kurs beli sebagai kurs dollar
 
-    st.write("\n### Predictions:")
+    fitur = np.array([[harga_penutupan, inflasi, kurs_dollar]])
+
+    st.write("\n### Prediksi Harga Emas:")
     for name, model in models.items():
-        prediction = predict_price(name, feature_vector)
-        st.write(f"**{name}**: ${prediction[0]:.2f}")
+        prediksi = predict_price(name, fitur)
+        st.write(f"**{name}**: Rp {prediksi[0]:,.2f}")
 
-    # Allow user to upload their own dataset
-    st.sidebar.header("Upload Your Dataset")
-    uploaded_file = st.sidebar.file_uploader("Upload CSV", type=["csv"])
+    # Memungkinkan pengguna mengunggah dataset mereka sendiri
+    st.sidebar.header("Unggah Dataset Anda")
+    file_yang_diunggah = st.sidebar.file_uploader("Unggah CSV", type=["csv"])
 
-    if uploaded_file is not None:
-        data = pd.read_csv(uploaded_file)
-        st.write("\n### Sample of Uploaded Data:")
+    if file_yang_diunggah is not None:
+        data = pd.read_csv(file_yang_diunggah)
+        st.write("\n### Sampel Data yang Diunggah:")
         st.write(data.head())
 
 if __name__ == "__main__":
