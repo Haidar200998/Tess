@@ -5,7 +5,7 @@ import pickle
 
 # Load trained models
 models = {}
-model_names = ["Decision_Tree", "Random_Forest", "AdaBoost", "Gradient_Boosting", "Support_Vector_Regressor"]
+model_names = ["Decision Tree", "Random Forest", "AdaBoost", "Gradient Boosting", "Support Vector Regressor"]
 for name in model_names:
     with open(f'{name}_model.pkl', 'rb') as file:
         models[name] = pickle.load(file)
