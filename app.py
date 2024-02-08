@@ -5,10 +5,11 @@ import pickle
 
 # Load trained models
 models = {}
-model_names = ["Decision Tree", "Random Forest", "AdaBoost", "Gradient Boosting", "Support Vector Regressor"]
-for name in model_names:
-    with open(f'{name}_model.pkl', 'rb') as file:
-        models[name] = pickle.load(file)
+model_files = ["decision_tree_best.pkl", "random_forest_best.pkl", "adaboost_best.pkl", "gradient_boosting_best.pkl"]
+model_names = ["Decision Tree", "Random Forest", "AdaBoost", "Gradient Boosting"]
+for name, file in zip(model_names, model_files):
+    with open(file, 'rb') as model_file:
+        models[name] = pickle.load(model_file)
 
 # Function to predict using selected model
 def predict_price(model_name, features):
